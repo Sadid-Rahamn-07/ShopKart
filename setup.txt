@@ -1,0 +1,24 @@
+SETTING UP THE ENVIRONMENT
+- npm install express (installing express package)
+- npm install -g express-generator (installing the express environment generator)
+- express <folder name> (sets up the express environment)
+- npm install (installing node packages)
+- npm start 
+(optional)
+- npm install --save-dev nodemon (nodemon automatically restarts your Node server)
+- changes in bin/www :
+    const open = require('open').default;
+    server.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+    open(`http://localhost:${port}`);
+    });
+- changes in package.json :
+    "scripts": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www" <-- add this
+    },
+* these changes would allow you to use nodemon 
+and give you a promt to open browser and view your page
+- npm run dev (start the your page)
+
+
