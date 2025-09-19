@@ -3,7 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>ShopKart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="./stylesheets/navbar.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   </head>
-  <body></body>
+  <body>
+    <div class="navbar">
+      <!--logo-->
+      <div href="" class="menu-icon" onclick="toggleMenu()">☰</div>
+      <div class="nav_left">
+        <a class="nav_item" href="###">Home</a>
+      </div>
+      <!--navbar links center-->
+      <div class="nav_center">
+        <form onsubmit="" class="" id="search-form">
+          <input id="search-box" onclick="showPopup()" type="search" name="" placeholder="search here..." />
+        </form>
+        <button id="search-btn" type="submit" class="fa fa-search" aria-label="Search"></button>
+      </div>
+      <!--navbar links right-->
+      <div class="nav_right">
+        <a class="nav_item" href="###"><i class="fas fa-heart shopping-icon"></i></a>
+        <a class="nav_item" href="###"><i class="fas fa-shopping-cart shopping-icon"></i></a>
+        <a class="nav_item" href="###">Signup | Login</a>
+      </div>
+
+      <!--screen nav-->
+    </div>
+  </body>
 </html>
+
+<script src="./javascripts/home.js"></script>

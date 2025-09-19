@@ -17,8 +17,7 @@ SETTING UP THE ENVIRONMENT
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www" <-- add this
     },
-* these changes would allow you to use nodemon 
-and give you a promt to open browser and view your page
+* These changes would allow you to use nodemon and give you a promt to open browser and view your page
 - npm run dev (start the your page)
 
 
