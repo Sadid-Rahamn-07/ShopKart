@@ -131,3 +131,8 @@ body {
     display: none; /* hide menu button */
   }
 }
+
+/*banner*/
+.banner {
+  display: flex;
+}
