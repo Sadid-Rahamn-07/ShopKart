@@ -53,14 +53,16 @@ body {
 .navbar.open .nav_right {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .navbar.open .nav_item {
-  width: 1000px;
+  width: 100%;
 }
 
 .navbar.open .nav_center {
   display: flex;
+  width: 100%;
 }
 
 /*SEARCH CSS*/
@@ -97,7 +99,10 @@ body {
   .nav_right {
     display: none; /* hide sections */
   }
-
+  #search-form {
+    width: 100%;
+    margin: 5px;
+  }
   .menu-icon {
     display: block; /* show menu button */
     padding: 20px;
@@ -107,6 +112,11 @@ body {
 
   .menu-icon:hover {
     background-color: crimson;
+  }
+  #search-btn {
+    width: 10%;
+    margin: 5px;
+    cursor: pointer;
   }
 }
 
