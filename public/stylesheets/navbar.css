@@ -66,10 +66,7 @@ body {
 }
 
 /*SEARCH CSS*/
-#search-form {
-  width: 100%;
-}
-
+#search-form,
 #search-box {
   width: 100%;
 }
@@ -109,7 +106,6 @@ body {
     color: white;
     text-decoration: none;
   }
-
   .menu-icon:hover {
     background-color: crimson;
   }
@@ -117,6 +113,11 @@ body {
     width: 10%;
     margin: 5px;
     cursor: pointer;
+    justify-content: center;
+  }
+
+  #search-box {
+    margin-left: 2%;
   }
 }
 

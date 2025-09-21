@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="./javascripts/navbar.js"></script>
-    <script src="./javascripts/test.js"></script>
+    <link rel="stylesheet" href="./stylesheets/product_card.css"></link>
+    <script src="./javascripts/search.js"></script>
   </head>
   <body>
     <!--NAVBAR-->
@@ -21,10 +22,15 @@
 
       <!--navbar links center-->
       <div class="nav_center">
-        <form onsubmit="" class="" id="search-form">
+        <form class="search" id="search-form">
           <input id="search-box" onclick="showPopup()" type="search" name="" placeholder="search here..." />
         </form>
-        <button id="search-btn" type="submit" class="fa fa-search" aria-label="Search"></button>
+        <button
+          onclick="get_data(document.getElementById('search-box').value)"
+          id="search-btn"
+          type="button"
+          class="fa fa-search"
+          aria-label="Search"></button>
       </div>
 
       <!--navbar links right-->
@@ -39,6 +45,6 @@
       <img src="./images/ban.jpg" width="100%" height="auto" />
     </div>
 
-    <div id="display-container"></div>
+    <div class="display-container"></div>
   </body>
 </html>

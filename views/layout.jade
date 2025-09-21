@@ -1,7 +1,8 @@
 doctype html
 html
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    title= message || 'Error'
   body
-    block content
+    h1= message || 'Something went wrong'
+    h2= error?.status || ''
+    pre #{error?.stack || ''}
