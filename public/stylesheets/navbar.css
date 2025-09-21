@@ -5,6 +5,8 @@ body {
 /*NAVBAR CSS*/
 .navbar {
   display: flex;
+  position: fixed;
+  width: 100%;
   align-items: center; /* vertical centering */
   background-color: #333;
 }
