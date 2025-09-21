@@ -24,6 +24,7 @@ router.post('/login', async (req, res) => {
     }
 
     // Success
+    req.session.username = username;
     res.json({ success: true, userId: user.id, username: user.username });
 
   } catch (err) {
@@ -36,20 +37,20 @@ router.post('/signup', async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    // 1️⃣ Check if email exists
+    // Check if email exists
     const [existing] = await db.query("SELECT * FROM users WHERE username = ?", [name]);
 
     if (existing.length > 0) {
       return res.json({ success: false, error: "username already registered" });
     }
 
-    // 2️⃣ Insert new user
+    // Insert new user
     const [result] = await db.query(
       "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
       [name, email, password]
     );
 
-    // 3️⃣ Respond with success
+    // Respond with success
     res.json({ success: true, userId: result.insertId });
 
   } catch (err) {
@@ -58,4 +59,11 @@ router.post('/signup', async (req, res) => {
   }
 });
 
+router.get('/get_username', async (req, res) => {
+  if (req.session && req.session.username) {
+    res.json({ username: req.session.username });
+  } else {
+    res.json({ username: null });
+  }
+});
 module.exports = router;
