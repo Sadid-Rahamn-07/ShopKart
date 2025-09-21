@@ -1,7 +1,6 @@
 function toggleMenu() {
     var navbar = document.querySelector(".navbar");
     var menu_btn = document.querySelector(".menu-icon");
-    const search_form = document.getElementById("search-form-mobile");
 
     if (navbar.classList.contains("open")) {
         // Collapse

@@ -1,7 +1,3 @@
-body {
-  margin: 0px;
-}
-
 /*NAVBAR CSS*/
 .navbar {
   display: flex;
@@ -89,28 +85,6 @@ body {
   padding: 12px;
   border-radius: 5px;
   box-sizing: border-box;
-}
-
-/*BANNER*/
-.banner {
-  display: flex;
-  background-color: #ff6b6b;
-  width: 100%;
-  height: 500px;
-  color: whitesmoke;
-  justify-content: center;
-  align-items: center;
-}
-.banner_content {
-  text-align: center;
-}
-/*Procuct header*/
-.product_header {
-  display: block;
-  background-color: #3498db;
-  padding: 20px;
-  margin: 0px;
-  color: white;
 }
 
 /* RESPONSIVE LAYOUT */

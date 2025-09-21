@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 
 router.get("/", (req, res) => {
-    const api = 'https://api.escuelajs.co/api/v1/products';
+    const name = req.query.title;
+    const api = `https://api.escuelajs.co/api/v1/products/?title=${encodeURIComponent(name)}`;
 
     fetch(api)
         .then(response => {

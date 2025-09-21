@@ -1,6 +1,6 @@
 // Function to fetch data from backend
 function get_data(query) {
-    fetch(`/search`)
+    fetch(`/search/?title=${query}`)
         .then(res => {
             console.log('Status:', res.status);
             return res.text(); // temporarily get raw text
@@ -47,7 +47,7 @@ function load(data) {
         price.textContent = "$" + item.price;
         div.appendChild(price);
 
-        //price
+        //description
         const description = document.createElement("p");
         description.className = "description";
         description.textContent = item.description;
