@@ -21,11 +21,11 @@
       </form>
 
       <!-- Signup form -->
-      <form onsubmit="createUser()" id="signup-form">
-        <input type="text" placeholder="Full Name" required />
-        <input type="email" placeholder="Email" required />
-        <input type="password" placeholder="Password" required />
-        <input type="password" placeholder="Confirm Password" required />
+      <form method="POST" onsubmit="createUser()" id="signup-form">
+        <input name="name" type="text" placeholder="Full Name" required />
+        <input name="email" type="email" placeholder="Email" required />
+        <input name="password" type="password" placeholder="Password" required />
+        <input name="confirmPassword" type="password" placeholder="Confirm Password" required />
         <button type="submit">Sign Up</button>
         <div class="toggle">Already have an account? <a id="show-login">Login</a></div>
       </form>

@@ -5,10 +5,14 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  background-image: url("../images/background_login.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .container {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.7);
   padding: 2rem;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
