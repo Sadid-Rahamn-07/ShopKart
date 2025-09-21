@@ -26,7 +26,6 @@ function load(data) {
         displayer.textContent = "No results found.";
         return;
     }
-
     data.forEach(item => {
         const div = document.createElement("div");
         div.className = "card";
