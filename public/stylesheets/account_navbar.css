@@ -1,0 +1,29 @@
+.content_links {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  align-items: center;
+  background-color: #333;
+}
+.nav_item {
+  padding: 20px;
+  text-decoration: none;
+  color: white;
+}
+#home_ico {
+  padding: 0px;
+}
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+.nav_item:hover {
+  background-color: crimson;
+}
+
+.nav_item.active {
+  background-color: crimson;
+  color: white;
+}

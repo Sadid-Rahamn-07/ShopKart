@@ -1,8 +1,8 @@
-.account_form {
+.input_box {
   display: flex;
-  flex-direction: column;
+  gap: 10px;
   justify-content: center;
-  width: 100%;
+  align-items: center;
 }
 
 .container {
@@ -16,38 +16,6 @@
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
-input {
-  margin: 0.5rem 0;
-  padding: 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-select {
-  margin: 0.5rem 0;
-  padding: 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: white;
-}
-
-.gender_radio {
-  display: flex;
-  gap: 20px;
-}
-
-.DOB {
-  display: flex;
-  gap: 10px;
-}
-
-.input_box {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  align-items: center;
-}
-/*
 .product_preview {
   display: flex;
   justify-content: center;
@@ -114,4 +82,33 @@ select {
   height: 50px;
   margin: 5px;
 }
-*/
+
+.account_form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+input {
+  margin: 0.5rem 0;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+select {
+  margin: 0.5rem 0;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: white;
+}
+
+select {
+  margin: 0.5rem 0;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: white;
+}

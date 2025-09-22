@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wishlist</title>
+    <link rel="stylesheet" href="./stylesheets/account_navbar.css" />
+    <link rel="stylesheet" href="./stylesheets/wishlist.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js" defer></script>
+    <script src="./javascripts/wishlist.js" defer></script>
+  </head>
+  <body>
+    <div id="app">
+      <!--Navbar-->
+      <div class="content_links">
+        <div class="center">
+          <a class="nav_item" href="index.html"><i id="home_ico" class="fa fa-home"></i></a>
+          <a v-for="link in links" :key="link.name" :href="link.href" class="nav_item" :class="active">
+            {{ link.label }}
+          </a>
+          <a href="wishlist.html" class="nav_item active">Wishlist</a>
+        </div>
+      </div>
+
+      <!--Wishlish content-->
+      <div></div>
+    </div>
+  </body>
+</html>
