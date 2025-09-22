@@ -3,12 +3,23 @@ const vueinst = Vue.createApp({
         return {
             activeSection: 'Account', // stores which section is active
             username: null,
+            tab: 'post',
+            searchQuery: '',
+            products: [],         // all products fetched
+            filteredProducts: [],  // products displayed
             links: [
                 { name: 'Account', label: 'Account', href: '/account.html' },
                 { name: 'Purchase', label: 'Order', href: '/purchase.html' },
                 { name: 'MySale', label: 'Sale', href: '/sale.html' },
                 { name: 'Wishlist', label: 'Wishlist', href: '/wishlist.html' }
             ],
+            product: {
+                title: 'Title',
+                category: 'Category',
+                price: 'Price',
+                img: null,
+                description: 'Describe the the product',
+            },
             form: {
                 username: '',
                 address: '',
@@ -115,8 +126,70 @@ const vueinst = Vue.createApp({
                     }
                 })
                 .catch(err => console.error(err));
-        }
+        },
+        async uploadProduct() {
+            const form_productData = new FormData();
+            for (let key in this.product) {
+                form_productData.append(key, this.product[key])
+            }
+            if (this.profileImageFile) {
+                form_productData.append('img', this.profileImageFile)
+            };
+            fetch('users/postProduct', {
+                method: 'POST',
+                body: form_productData,
+                credentials: 'include',
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Profile updated successfully!');
+                        this.product = {
+                            title: '',
+                            category: '',
+                            price: '',
+                            img: '',
+                            description: '',
+                        };
+                        this.profileImage = null;
+                        this.profileImageFile = null;
 
+                        // optional: clear <input type="file">
+                        const fileInput = document.querySelector('input[type="file"]');
+                        if (fileInput) fileInput.value = '';
+                    } else {
+                        alert("product not uploaded");
+                    }
+                })
+                .catch(err => console.error(err));
+        },
+        async changeTab(tabName) {
+            this.tab = tabName;
+            this.showUserProducts();
+        },
+        async showUserProducts() {
+            fetch('/users/getUserProducts', {
+                credentials: 'include'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    this.products = data;          // store all products
+                    this.filteredProducts = data;  // initially show all
+                })
+        },
+        async searchProducts() {
+            const query = this.searchQuery.trim().toLowerCase();
+            if (!query) {
+                this.filteredProducts = this.products;
+                return;
+            }
+
+            this.filteredProducts = this.products.filter(product =>
+                product.title.toLowerCase().includes(query) ||
+                product.category.toLowerCase().includes(query) ||
+                product.description.toLowerCase().includes(query)
+            );
+        }
     },
     mounted() {
         this.fetchUsername();

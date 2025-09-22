@@ -31,11 +31,14 @@ app.use(session({
     rolling: true //reset cookie maxage on every response
   }
 }));
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/search', searchRouter);
-app.use('/uploads', express.static('uploads'));
+
+
 
 
 // catch 404 and forward to error handler

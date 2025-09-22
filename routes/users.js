@@ -1,8 +1,34 @@
 const express = require('express');
 const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
 const router = express.Router();
 const db = require('../db'); // promise pool
 
+// profile pic folder path
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/profile_img'); // make sure this folder exists
+  },
+  filename: function (req, file, cb) {
+    const ext = file.originalname.split('.').pop();
+    cb(null, `${req.session.username}_${Date.now()}.${ext}`);
+  }
+});
+
+//product image folder path
+const productStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/products'); // separate folder for product images
+  },
+  filename: function (req, file, cb) {
+    const ext = file.originalname.split('.').pop();
+    cb(null, `${req.session.username}_product_${Date.now()}.${ext}`);
+  }
+});
+
+const uploadProduct = multer({ storage: productStorage });
+const upload = multer({ storage });
 
 //login router
 router.post('/login', async (req, res) => {
@@ -63,33 +89,19 @@ router.post('/signup', async (req, res) => {
   }
 });
 
-// configure multer storage ONCE at the top
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads'); // make sure this folder exists
-  },
-  filename: function (req, file, cb) {
-    const ext = file.originalname.split('.').pop();
-    cb(null, `${req.session.username}_${Date.now()}.${ext}`);
-  }
-});
-
-const upload = multer({ storage });
-
 //update user info
 router.put('/update', upload.single('profile_photo'), async (req, res) => {
   if (!req.session.username) {
+    // delete uploaded file if exists
+    if (req.file) fs.unlinkSync(req.file.path);
     return res.status(401).json({ success: false, message: 'Not logged in' });
   }
-
 
   const { username, email, address, phone, gender, year, month, day } = req.body;
   const dob = `${year}-${month}-${day}`;
 
   let profileImagePath = null;
-  if (req.file) {
-    profileImagePath = `/uploads/${req.file.filename}`;
-  }
+  if (req.file) profileImagePath = `/uploads/profile_img/${req.file.filename}`;
 
   try {
     const sql = `
@@ -105,6 +117,8 @@ router.put('/update', upload.single('profile_photo'), async (req, res) => {
     res.json({ success: true });
   } catch (err) {
     console.error(err);
+    // delete uploaded file on DB error
+    if (req.file) fs.unlinkSync(req.file.path);
     res.status(500).json({ success: false, message: 'Database error' });
   }
 });
@@ -130,6 +144,46 @@ router.get('/get_username', async (req, res) => {
   }
 });
 
+//upload product
+router.post('/postProduct', uploadProduct.single('img'), async (req, res) => {
+  try {
+    const { title, category, price, description } = req.body;
+    const img = req.file ? req.file.filename : null; // uploaded file name
+
+    // Validate required fields
+    if (!title || !category || !price) {
+      // delete uploaded file if exists
+      if (req.file) fs.unlinkSync(req.file.path);
+      return res.status(400).json({ success: false, message: 'Missing required fields' });
+    }
+
+    const username = req.session.username;
+    const [rows] = await db.query(
+      "SELECT id FROM users WHERE username = ?", [username]
+    );
+
+    if (!rows.length) {
+      if (req.file) fs.unlinkSync(req.file.path);
+      return res.status(400).json({ success: false, message: "User not found" });
+    }
+
+    const user_id = rows[0].id;
+
+    const [result] = await db.query(
+      "INSERT INTO product (user_id, title, category, price, description, product_image) VALUES (?, ?, ?, ?, ?, ?)",
+      [user_id, title, category, price, description, img]
+    );
+
+    res.json({ success: true, productId: result.insertId });
+
+  } catch (err) {
+    console.error(err);
+    // delete uploaded file on any server error
+    if (req.file) fs.unlinkSync(req.file.path);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
 // fetch user profile picture
 router.get('/get_userPic', async (req, res) => {
   if (!req.session.username) {
@@ -152,5 +206,31 @@ router.get('/get_userPic', async (req, res) => {
     res.status(500).json({ success: false, error: "Database error" });
   }
 });
+
+//fetch all products internal
+router.get('/get_products', async (req, res) => {
+  try {
+    const [rows] = await db.query("SELECT * FROM product");
+    res.json(rows); // send all products
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Database error' });
+  }
+});
+
+router.get('/getUserProducts', async (req, res) => {
+  try {
+    const username = req.session.username;
+    const [rw] = await db.query(
+      "SELECT id FROM users WHERE username = ?", [username]
+    );
+    const user_id = rw[0].id;
+    const [rows] = await db.query("SELECT * FROM product WHERE user_id = ?", [user_id]);
+    res.json(rows); // send the products posted by user
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Database error' });
+  }
+})
 
 module.exports = router;

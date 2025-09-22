@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Account</title>
     <link rel="stylesheet" href="./stylesheets/account.css" />
+    <link rel="stylesheet" href="./stylesheets/product_card.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-
     <script src="https://unpkg.com/vue@3/dist/vue.global.js" defer></script>
     <script src="./javascripts/account.js" defer></script>
   </head>
@@ -26,8 +26,9 @@
           </a>
         </div>
       </div>
-      <!--Account Page-->
+
       <div class="content_wrapper">
+        <!--Account Page-->
         <div v-if="activeSection === 'Account'" id="Account">
           <h1>Account Section</h1>
           <p>Welcome back, {{username}}</p>
@@ -35,9 +36,9 @@
             <form class="account_form">
               <!--Name, Email, Address, Phone-->
               <input v-model="form.username" name="name" type="text" placeholder="Username" required />
-              <input v-model="form.address" name="address" type="text" placeholder="address" />
+              <input v-model="form.address" name="address" type="text" placeholder="Address" />
               <input v-model="form.email" name="email" type="text" placeholder="Email" required />
-              <input v-model="form.phone" name="phone" type="text" placeholder="phone number" required />
+              <input v-model="form.phone" name="phone" type="text" placeholder="Phone Number" required />
 
               <!--gender-->
               <div class="gender_radio">
@@ -80,7 +81,8 @@
                 type="file"
                 id="image"
                 accept="image/*"
-                @change="handleImageUpload" />
+                @change="handleImageUpload"
+                required />
 
               <!--buttons-->
               <button type="button" @click="submitForm" id="update" class="save_image">Update</button>
@@ -96,7 +98,90 @@
 
         <!--Sale Page-->
         <div v-if="activeSection === 'MySale'" id="MySale">
-          <h1>Sale Section</h1>
+          <div class="tablinks">
+            <a :class="{ active: tab === 'post' }" @click="changeTab('post')" class="tabItem">Post</a>
+            <a :class="{ active: tab === 'posted' }" @click="changeTab('posted')" class="tabItem">Posted</a>
+          </div>
+          <!--post new products -->
+          <div v-if="tab === 'post'">
+            <h1>Sale Section</h1>
+            <!--PRODUCT PREVIEW-->
+            <h2 style="text-align: center">Product Preview</h2>
+            <div class="product_preview">
+              <div class="preview_title">
+                <h3>{{product.title}}</h3>
+              </div>
+              <div class="preview_img">
+                <img :src="profileImage || './images/sample.png'" alt="Current Profile" style="width: 100%" />
+              </div>
+              <p style="font-weight: bold">${{product.price}}</p>
+              <div class="textbox">
+                <p class="preview_desc">{{product.description}}</p>
+              </div>
+            </div>
+            <!--POST PRODUCT FORM-->
+            <div class="container">
+              <form class="account_form">
+                <!--Name, Email, Address, Phone-->
+                <input v-model="product.title" name="title" type="text" placeholder="Title" required />
+                <select v-model="product.category" id="category" required>
+                  <option value="" disabled>select a category</option>
+                  <option value="clothes">Clothes</option>
+                  <option value="headphones">Headphones</option>
+                  <option value="beauty">Beauty</option>
+                  <option value="shoes">Shoes</option>
+                  <option value="other">Others</option>
+                  <!-- Add more categories as needed -->
+                </select>
+                <input v-model="product.price" name="price" type="text" placeholder="Price" required />
+                <input
+                  v-model="product.description"
+                  name="description"
+                  type="text"
+                  placeholder="description"
+                  required />
+
+                <input
+                  name="profile_photo"
+                  class="input"
+                  type="file"
+                  id="image"
+                  accept="image/*"
+                  @change="handleImageUpload" />
+
+                <!--buttons-->
+                <button type="button" @click="uploadProduct">Post</button>
+              </form>
+            </div>
+            <br />
+          </div>
+          <!--show products posted-->
+          <div @click="showUserProducts" v-if="tab === 'posted'">
+            <h1>Posted Section</h1>
+            <div class="posted_wrapper">
+              <input
+                style="width: 100%"
+                type="search"
+                v-model="searchQuery"
+                placeholder="Search products..."
+                @input="searchProducts" />
+            </div>
+
+            <div class="display-container">
+              <div v-if="filteredProducts.length === 0">No results found.</div>
+
+              <div v-for="product in filteredProducts" :key="product.id" class="card">
+                <h3 style="text-align: center">{{ product.title }}</h3>
+
+                <img
+                  :src="product.product_image ? '/uploads/products/' + product.product_image : './images/sample.png'"
+                  class="img_product" />
+
+                <p class="price">${{ product.price }}</p>
+                <p class="description">{{ product.description }}</p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!--Wishlist Page-->
