@@ -14,6 +14,7 @@ function login(event) {
             if (data.success) {
                 alert("User login successful!");
                 form.reset();
+                window.location.href = 'index.html';
             } else {
                 alert("Error: " + data.error);
             }
@@ -61,6 +62,7 @@ function createUser(event) {
             if (data.success) {
                 alert("User created successfully!");
                 form.reset();
+                window.location.href = 'index.html';
             } else {
                 alert("Error: " + data.error);
             }

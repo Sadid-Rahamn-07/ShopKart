@@ -1,7 +1,10 @@
 const express = require('express');
+const multer = require('multer');
 const router = express.Router();
 const db = require('../db'); // promise pool
 
+
+//login router
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
@@ -33,6 +36,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
+//signup router
 router.post('/signup', async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -59,6 +63,65 @@ router.post('/signup', async (req, res) => {
   }
 });
 
+// configure multer storage ONCE at the top
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads'); // make sure this folder exists
+  },
+  filename: function (req, file, cb) {
+    const ext = file.originalname.split('.').pop();
+    cb(null, `${req.session.username}_${Date.now()}.${ext}`);
+  }
+});
+
+const upload = multer({ storage });
+
+//update user info
+router.put('/update', upload.single('profile_photo'), async (req, res) => {
+  if (!req.session.username) {
+    return res.status(401).json({ success: false, message: 'Not logged in' });
+  }
+
+
+  const { username, email, address, phone, gender, year, month, day } = req.body;
+  const dob = `${year}-${month}-${day}`;
+
+  let profileImagePath = null;
+  if (req.file) {
+    profileImagePath = `/uploads/${req.file.filename}`;
+  }
+
+  try {
+    const sql = `
+      UPDATE users
+      SET username=?, email=?, address=?, phone=?, gender=?, dob=?${profileImagePath ? ', profile_image=?' : ''}
+      WHERE username=?`;
+
+    const params = profileImagePath
+      ? [username, email, address, phone, gender, dob, profileImagePath, req.session.username]
+      : [username, email, address, phone, gender, dob, req.session.username];
+
+    await db.query(sql, params);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'Database error' });
+  }
+});
+
+//logout
+router.post('/logout', async (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Logout error:', err);
+      return res.status(500).json({ success: false, message: 'Logout failed' });
+    }
+    res.clearCookie('connect.sid'); // clear session cookie
+    res.json({ success: true, message: 'Logged out successfully' });
+  });
+});
+
+//fetch username
 router.get('/get_username', async (req, res) => {
   if (req.session && req.session.username) {
     res.json({ username: req.session.username });
@@ -66,4 +129,28 @@ router.get('/get_username', async (req, res) => {
     res.json({ username: null });
   }
 });
+
+// fetch user profile picture
+router.get('/get_userPic', async (req, res) => {
+  if (!req.session.username) {
+    return res.status(401).json({ success: false, error: "Not logged in" });
+  }
+
+  try {
+    const [rows] = await db.query(
+      "SELECT * FROM users WHERE username = ?",
+      [req.session.username]
+    );
+
+    if (rows.length === 0) {
+      return res.json({ success: false, error: "User not found" });
+    }
+
+    res.json({ success: true, profile_image: rows[0].profile_image });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: "Database error" });
+  }
+});
+
 module.exports = router;

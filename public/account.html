@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account</title>
+    <link rel="stylesheet" href="./stylesheets/account.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js" defer></script>
+    <script src="./javascripts/account.js" defer></script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="content_links">
+        <div class="center">
+          <a class="nav_item" href="index.html"><i id="home_ico" class="fa fa-home"></i></a>
+          <a
+            v-for="link in links"
+            :key="link.name"
+            :href="link.href"
+            class="nav_item"
+            :class="{ active: activeSection === link.name }"
+            @click.prevent="showSection(link.name)">
+            {{ link.label }}
+          </a>
+        </div>
+      </div>
+      <!--Account Page-->
+      <div class="content_wrapper">
+        <div v-if="activeSection === 'Account'" id="Account">
+          <h1>Account Section</h1>
+          <p>Welcome back, {{username}}</p>
+          <div class="container">
+            <form class="account_form">
+              <!--Name, Email, Address, Phone-->
+              <input v-model="form.username" name="name" type="text" placeholder="Username" required />
+              <input v-model="form.address" name="address" type="text" placeholder="address" />
+              <input v-model="form.email" name="email" type="text" placeholder="Email" required />
+              <input v-model="form.phone" name="phone" type="text" placeholder="phone number" required />
+
+              <!--gender-->
+              <div class="gender_radio">
+                <label> <input type="radio" value="male" v-model="form.gender" /> Male </label>
+                <label> <input type="radio" value="female" v-model="form.gender" /> Female </label>
+                <label> <input type="radio" value="prefer_not_to_say" v-model="form.gender" /> Other </label>
+              </div>
+
+              <!--DOB-->
+              <div class="DOB">
+                <p>Date of Birth</p>
+                <div class="input_box">
+                  <select v-model="form.year">
+                    <option disabled value="">Year</option>
+                    <option v-for="y in years" :key="y" :value="y">{{ y }}</option>
+                  </select>
+
+                  <select v-model="form.month">
+                    <option disabled value="">Month</option>
+                    <option v-for="(m, index) in months" :key="index" :value="index + 1">{{ m }}</option>
+                  </select>
+
+                  <select v-model="form.day">
+                    <option disabled value="">Day</option>
+                    <option v-for="d in daysInMonth" :key="d" :value="d">{{ d }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <!--Profile Image-->
+              <div class="current_profile">
+                <img
+                  :src="profileImage || './images/ban.jpg'"
+                  alt="Current Profile"
+                  style="max-width: 150px; border-radius: 8px" />
+              </div>
+              <input
+                name="profile_photo"
+                class="input"
+                type="file"
+                id="image"
+                accept="image/*"
+                @change="handleImageUpload" />
+
+              <!--buttons-->
+              <button type="button" @click="submitForm" id="update" class="save_image">Update</button>
+              <button type="button" @click="logout" class="logout_button">Logout</button>
+            </form>
+          </div>
+        </div>
+
+        <!--Order Page-->
+        <div v-if="activeSection === 'Purchase'" id="Purchase">
+          <h1>Purchase Section</h1>
+        </div>
+
+        <!--Sale Page-->
+        <div v-if="activeSection === 'MySale'" id="MySale">
+          <h1>Sale Section</h1>
+        </div>
+
+        <!--Wishlist Page-->
+        <div v-if="activeSection === 'Wishlist'" id="Wishlist">
+          <h1>Wishlist Section</h1>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
