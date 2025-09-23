@@ -3,15 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Order</title>
     <link rel="stylesheet" href="./stylesheets/account_navbar.css" />
     <link rel="stylesheet" href="./stylesheets/purchase.css" />
+    <link rel="stylesheet" href="./stylesheets/product_card.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <script src="https://unpkg.com/vue@3/dist/vue.global.js" defer></script>
     <script src="./javascripts/purchase.js" defer></script>
   </head>
   <body>
     <div id="app">
+      <!--navbar-->
       <div class="content_links">
         <div class="center">
           <a class="nav_item" href="index.html"><i id="home_ico" class="fa fa-home"></i></a>
@@ -21,6 +23,80 @@
           <a href="wishlist.html" class="nav_item">Wishlist</a>
         </div>
       </div>
+
+      <!--tab links-->
+      <div class="tablinks">
+        <a :class="{ active: tab === 'orders' }" @click="changeTab('orders')" class="tabItem">Orders</a>
+        <a :class="{ active: tab === 'reviews' }" @click="changeTab('reviews')" class="tabItem">Reviews</a>
+      </div>
+
+      <!--Orders Tab-->
+      <div v-if="tab === 'orders'">
+        <h1>Order Section</h1>
+        <h2 style="text-align: center">Your Orders</h2>
+        <div class="display-container">
+          <div v-if="orders.length === 0">No orders found.</div>
+          <div v-for="order in orders" :key="order.id" class="card">
+            <h3 style="text-align: center">{{ order.title }}</h3>
+            <img class="img_product" :src="'/uploads/products/' + order.product_image" alt="Product image" />
+            <div class="product_info">
+              <p><b>Category:</b> {{ order.category }}</p>
+              <p><b>Price:</b> ${{ order.price }}</p>
+              <p><b>Description:</b> {{ order.description }}</p>
+              <p><b>Seller:</b> {{ order.seller_name }}</p>
+              <p><b>Order Date:</b> {{ new Date(order.order_date).toLocaleString() }}</p>
+              <button @click="placeOrder(order.order_id)" style="width: 100%; text-align: center">Confirm Order</button>
+              <br />
+              <br />
+              <button @click="cancelOrder(order.order_id)" style="background-color: crimson; width: 100%">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reviews Tab -->
+      <div v-if="tab === 'reviews'">
+        <h1>Review Section</h1>
+        <h2 style="text-align: center">Your Orders</h2>
+
+        <div class="display-container">
+          <div v-if="orders.length === 0">No orders found.</div>
+          <div v-for="order in orders" :key="order.order_id" class="card">
+            <h3 style="text-align: center">{{ order.title }}</h3>
+            <img class="img_product" :src="'/uploads/products/' + order.product_image" alt="Product image" />
+            <div class="product_info">
+              <p><b>Category:</b> {{ order.category }}</p>
+              <p><b>Price:</b> ${{ order.price }}</p>
+              <p><b>Description:</b> {{ order.description }}</p>
+              <p><b>Seller:</b> {{ order.seller_name }}</p>
+              <p><b>Order Date:</b> {{ new Date(order.order_date).toLocaleString() }}</p>
+              <form @submit.prevent="submitReview(order.order_id)">
+                <div>
+                  <label><b>Rating:</b></label>
+                  <span v-for="n in 5" :key="n">
+                    <input type="radio" :value="n" v-model="reviews[order.order_id].rating" /> {{ n }}★
+                  </span>
+                </div>
+
+                <div>
+                  <label><b>Comments:</b></label>
+                  <textarea
+                    v-model="reviews[order.order_id].comments"
+                    rows="4"
+                    cols="25"
+                    placeholder="Enter your review"></textarea>
+                </div>
+
+                <button type="submit">Submit Review</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--reviews tab-->
     </div>
+    <!--app-->
   </body>
 </html>

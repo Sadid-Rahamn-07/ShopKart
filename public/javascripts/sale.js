@@ -34,7 +34,7 @@ const vueinst = Vue.createApp({
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-                        alert('Profile updated successfully!');
+                        alert('Product updated successfully!');
                         this.product = {
                             title: '',
                             category: '',
@@ -49,7 +49,7 @@ const vueinst = Vue.createApp({
                         const fileInput = document.querySelector('input[type="file"]');
                         if (fileInput) fileInput.value = '';
                     } else {
-                        alert("product not uploaded");
+                        alert("Product not uploaded");
                     }
                 })
                 .catch(err => console.error(err));

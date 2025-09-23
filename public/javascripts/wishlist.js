@@ -1,11 +1,15 @@
 const vueinst = Vue.createApp({
     data() {
         return {
-            links: [
-                { name: 'Account', label: 'Account', href: '/account.html' },
-                { name: 'Purchase', label: 'Order', href: '/purchase.html' },
-                { name: 'MySale', label: 'Sale', href: '/sale.html' },
-            ],
+        }
+    },
+    methods: {
+        async fetch_apiProducts() {
+            fetch('/search')
+                .then(res => res.json)
+                .then(data => {
+
+                })
         }
     }
 });

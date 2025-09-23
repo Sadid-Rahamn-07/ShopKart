@@ -1,0 +1,32 @@
+.orders-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.order-card {
+  display: flex;
+  border: 1px solid #333;
+  border-radius: 20px;
+}
+
+.order-card:hover {
+  box-shadow: 0 16px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.product_info {
+  display: flex;
+  flex-direction: column;
+  margin: 15px;
+}
+
+@media screen and (max-width: 715px) {
+  .order-card {
+    flex-direction: column;
+  }
+  #product_img {
+    height: 200px;
+  }
+}

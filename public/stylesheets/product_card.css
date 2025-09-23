@@ -11,6 +11,8 @@
   border-radius: 10px;
   box-sizing: border-box;
   background-color: white;
+  display: flex;
+  flex-direction: column;
 }
 .title {
   display: flex;
@@ -23,37 +25,51 @@
 .description {
   text-align: justify;
   font-style: italic;
-  margin: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  height: 175px;
+  padding: 0px;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 .price {
   text-align: center;
   font-weight: bold;
+  padding: 0px;
 }
 .img_product {
   width: 100%;
-
   justify-content: center;
   height: 200px;
 }
 
 /* On mouse-over, add a deeper shadow */
 .card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 16px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
-@media screen and (max-width: 715px) {
+button {
+  padding: 0.8rem;
+  border: none;
+  border-radius: 5px;
+  background: #333;
+  color: #fff;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 830px) {
   .card {
-    width: 80%;
+    width: 350px;
   }
 }
 
-@media screen and (max-width: 1000px) and (min-width: 715px) {
+@media screen and (max-width: 1092px) and (min-width: 830px) {
   .card {
     width: 40%;
   }
 }
 
-@media screen and (max-width: 1200px) and (min-width: 1000px) {
+@media screen and (max-width: 1689px) and (min-width: 1092px) {
   .card {
     width: 30%;
   }

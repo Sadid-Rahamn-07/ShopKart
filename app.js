@@ -8,6 +8,7 @@ const session = require('express-session');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var searchRouter = require('./routes/search');
+var PurchaseRouter = require('./routes/purchase');
 
 var app = express();
 
@@ -37,7 +38,7 @@ app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/search', searchRouter);
-
+app.use('/purchase', PurchaseRouter)
 
 
 

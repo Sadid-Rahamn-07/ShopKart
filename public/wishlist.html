@@ -6,9 +6,10 @@
     <title>Wishlist</title>
     <link rel="stylesheet" href="./stylesheets/account_navbar.css" />
     <link rel="stylesheet" href="./stylesheets/wishlist.css" />
+     <link rel="stylesheet" href="./stylesheets/product_card.css"></link>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <script src="https://unpkg.com/vue@3/dist/vue.global.js" defer></script>
-    <script src="./javascripts/wishlist.js" defer></script>
+    <script src="./javascripts/search.js" defer></script>
   </head>
   <body>
     <div id="app">
@@ -16,15 +17,41 @@
       <div class="content_links">
         <div class="center">
           <a class="nav_item" href="index.html"><i id="home_ico" class="fa fa-home"></i></a>
-          <a v-for="link in links" :key="link.name" :href="link.href" class="nav_item" :class="active">
-            {{ link.label }}
-          </a>
+          <a href="account.html" class="nav_item">Account</a>
+          <a href="purchase.html" class="nav_item">Order</a>
+          <a href="sale.html" class="nav_item">Sale</a>
           <a href="wishlist.html" class="nav_item active">Wishlist</a>
         </div>
       </div>
 
       <!--Wishlish content-->
-      <div></div>
+      <div class="container">
+        <h1>Wishlist Section</h1>
+          <div class="posted_wrapper">
+            <input
+              style="width: 100%"
+              type="search"
+              v-model="searchQuery"
+              placeholder="Search products..."
+              @input="get_data(searchQuery)" />
+          </div>
+      </div>
+      
+      <!--show products from api-->
+      <div class="display-container">
+        <!-- Show loader -->
+        <div v-if="loading">Loading products...</div>
+        
+        <div v-else-if="products.length === 0 ">No results found.</div>
+        <div v-for="item in products" :key="item.id" class="card">
+          <h3 class="title">{{ item.title }}</h3>
+          <img class="img_product" :src="item.images[0]" alt="Product image" />
+          <p class="price">${{ item.price }}</p>
+          <p class="description">{{ item.description }}</p>
+          <button>Add to Cart</button>
+        </div>
+      </div>
+
     </div>
   </body>
 </html>

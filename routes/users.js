@@ -138,9 +138,9 @@ router.post('/logout', async (req, res) => {
 //fetch username
 router.get('/get_username', async (req, res) => {
   if (req.session && req.session.username) {
-    res.json({ username: req.session.username });
+    res.json({ success: true, username: req.session.username });
   } else {
-    res.json({ username: null });
+    res.json({ success: false, username: null });
   }
 });
 

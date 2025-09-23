@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Sale</title>
     <link rel="stylesheet" href="./stylesheets/product_card.css" />
     <link rel="stylesheet" href="./stylesheets/account_navbar.css" />
     <link rel="stylesheet" href="./stylesheets/sale.css" />
@@ -13,6 +13,7 @@
   </head>
   <body>
     <div id="app">
+      <!--Navbar-->
       <div class="content_links">
         <div class="center">
           <a class="nav_item" href="index.html"><i id="home_ico" class="fa fa-home"></i></a>
@@ -45,6 +46,7 @@
               <div class="textbox">
                 <p class="preview_desc">{{product.description}}</p>
               </div>
+              <button style="width: 100%">Add to Cart</button>
             </div>
             <!--POST PRODUCT FORM-->
             <div class="container">
@@ -57,7 +59,7 @@
                   <option value="headphones">Headphones</option>
                   <option value="beauty">Beauty</option>
                   <option value="shoes">Shoes</option>
-                  <option value="other">Others</option>
+                  <option value="others">Others</option>
                   <!-- Add more categories as needed -->
                 </select>
                 <input v-model="product.price" name="price" type="text" placeholder="Price" required />
