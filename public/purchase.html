@@ -62,28 +62,28 @@
         <h2 style="text-align: center">Your Orders</h2>
 
         <div class="display-container">
-          <div v-if="orders.length === 0">No orders found.</div>
-          <div v-for="order in orders" :key="order.order_id" class="card">
-            <h3 style="text-align: center">{{ order.title }}</h3>
-            <img class="img_product" :src="'/uploads/products/' + order.product_image" alt="Product image" />
+          <div v-if="reviews_items.length === 0">No orders found.</div>
+          <div v-for="review in reviews_items" :key="review.id" class="card">
+            <h3 style="text-align: center">{{ review.product_title }}</h3>
+            <img class="img_product" :src="'/uploads/products/' + review.product_image" alt="Product image" />
             <div class="product_info">
-              <p><b>Category:</b> {{ order.category }}</p>
-              <p><b>Price:</b> ${{ order.price }}</p>
-              <p><b>Description:</b> {{ order.description }}</p>
-              <p><b>Seller:</b> {{ order.seller_name }}</p>
-              <p><b>Order Date:</b> {{ new Date(order.order_date).toLocaleString() }}</p>
-              <form @submit.prevent="submitReview(order.order_id)">
+              <p><b>Category:</b> {{ review.product_category }}</p>
+              <p><b>Price:</b> ${{ review.product_price }}</p>
+              <p><b>Description:</b> {{ review.product_description }}</p>
+              <p><b>Order Date:</b> {{ new Date(review.order_date).toLocaleString() }}</p>
+
+              <form @submit.prevent="submitReview(review.id)">
                 <div>
                   <label><b>Rating:</b></label>
                   <span v-for="n in 5" :key="n">
-                    <input type="radio" :value="n" v-model="reviews[order.order_id].rating" /> {{ n }}★
+                    <input type="radio" :value="n" v-model="reviews[review.id].rating" /> {{ n }}★
                   </span>
                 </div>
 
                 <div>
                   <label><b>Comments:</b></label>
                   <textarea
-                    v-model="reviews[order.order_id].comments"
+                    v-model="reviews[review.id].comments"
                     rows="4"
                     cols="25"
                     placeholder="Enter your review"></textarea>

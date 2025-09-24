@@ -3,6 +3,7 @@ const vueinst = Vue.createApp({
         return {
             orders: [],
             tab: 'orders',
+            reviews_items: [],
             reviews: {} // store per-order reviews
         };
     },
@@ -14,21 +15,31 @@ const vueinst = Vue.createApp({
 
                 if (data.success) {
                     this.orders = data.orders;
-
-                    // Initialize reviews for each order
-                    this.orders.forEach(order => {
-                        if (!this.reviews[order.order_id]) {
-                            this.reviews[order.order_id] = {
-                                rating: null,
-                                comments: ''
-                            };
-                        }
-                    });
                 } else {
                     alert(data.message || "Failed to fetch orders");
                 }
             } catch (err) {
                 console.error("Error fetching orders:", err);
+            }
+        },
+        async fetchPendingReviews() {
+            const res = await fetch('/purchase/getPendingReviews');
+            const data = await res.json();
+
+            if (data.success) {
+                this.reviews_items = data.review_items;
+
+                // Initialize review state for each review
+                this.reviews_items.forEach(item => {
+                    if (!this.reviews[item.id]) {
+                        this.reviews[item.id] = {
+                            rating: null,
+                            comments: ''
+                        };
+                    }
+                });
+            } else {
+                alert(data.message || "Failed to fetch reviews");
             }
         },
         async cancelOrder(orderID) {
@@ -48,22 +59,26 @@ const vueinst = Vue.createApp({
         async changeTab(tabName) {
             this.tab = tabName;
         },
-        async submitReview(orderId) {
-            const review = this.reviews[orderId];
+        async submitReview(reviewId) {
+            const review = this.reviews[reviewId];
             try {
                 const res = await fetch('/purchase/review', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        order_id: orderId,
+                        reviews_id: reviewId,
                         rating: review.rating,
                         comments: review.comments,
                         credentials: 'include'
                     })
                 });
                 const data = await res.json();
-                if (data.success) alert('Review submitted!');
-                else alert('Failed to submit review.');
+                if (data.success) {
+                    alert('Review submitted!')
+                }
+                else {
+                    alert('Failed to submit review.')
+                };
             } catch (err) {
                 console.error(err);
                 alert('Error submitting review.');
@@ -86,6 +101,7 @@ const vueinst = Vue.createApp({
     },
     mounted() {
         this.fetchOrders();
+        this.fetchPendingReviews();
     }
 });
 
