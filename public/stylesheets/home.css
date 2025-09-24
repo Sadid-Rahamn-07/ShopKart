@@ -1,7 +1,6 @@
 /*BODY*/
 body {
   margin: 0px;
-  font-family: Arial, sans-serif;
 }
 
 /*BANNER*/
@@ -45,4 +44,21 @@ body {
   width: 40px;
   margin: 5px;
   border-radius: 50px;
+}
+
+.preview_productInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px;
+}
+
+#preview_text {
+  margin: 0px;
+}
+
+@media screen and (max-width: 1650px) and (min-width: 755px) {
+  .desription_box {
+    height: 40px;
+  }
 }

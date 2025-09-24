@@ -2,18 +2,20 @@ const vueinst = Vue.createApp({
     data() {
         return {
             product: {
-                title: 'Title',
-                category: 'Category',
-                price: 'Price',
+                title: '',
+                category: '',
+                price: '',
                 img: null,
-                description: 'Describe the the product',
+                description: 'Describe the the product...',
             },
+            currentDate: '',
             profileImage: null,
             profileImageFile: null,
             activeSection: 'MySale',
             tab: 'post',
             searchQuery: '',
             products: [],         // all products fetched
+            seller: '',
             filteredProducts: [],  // products displayed
         }
     },
@@ -56,7 +58,9 @@ const vueinst = Vue.createApp({
         },
         async changeTab(tabName) {
             this.tab = tabName;
-            this.showUserProducts();
+            if (tabName === 'posted') {
+                this.showUserProducts();
+            }
         },
         async showUserProducts() {
             fetch('/users/getUserProducts', {
@@ -64,8 +68,9 @@ const vueinst = Vue.createApp({
             })
                 .then(res => res.json())
                 .then(data => {
-                    this.products = data;          // store all products
-                    this.filteredProducts = data;  // initially show all
+                    this.seller = data.username;          // store the username
+                    this.products = data.products;         // store all products
+                    this.filteredProducts = data.products; // initially show all
                 })
         },
         async searchProducts() {
@@ -87,6 +92,11 @@ const vueinst = Vue.createApp({
             this.profileImageFile = file;            // store the File object
             this.profileImage = URL.createObjectURL(file); // preview
         },
+    },
+    mounted() {
+        this.showUserProducts();
+        const now = new Date();
+        this.currentDate = now.toLocaleDateString(); // e.g., "24/09/2025"
     }
 });
 

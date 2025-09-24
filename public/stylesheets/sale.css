@@ -20,15 +20,22 @@
 .product_preview {
   display: flex;
   justify-content: center;
-  align-items: center;
   flex-direction: column;
-  width: 300px;
+  width: 350px;
   margin: auto;
   background-color: rgba(255, 255, 255, 0.7);
   border-radius: 20px;
   margin-bottom: 20px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  box-sizing: border-box;
+}
+#preview_text {
+  margin: 0px;
+}
+.preview_productInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px;
 }
 .product_preview:hover {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);

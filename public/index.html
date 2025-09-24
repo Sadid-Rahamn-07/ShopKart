@@ -61,6 +61,24 @@
       <!--Products-->
       <h1 class="product_header">Products</h1>
       <div class="display-container">
+        <div v-if="filteredProducts.length === 0">No results found.</div>
+
+        <div v-for="product in filteredProducts" :key="product.id" class="card">
+          <h3 style="text-align: center">{{ product.title }}</h3>
+          <img
+            :src="product.product_image ? '/uploads/products/' + product.product_image : './images/sample.png'"
+            class="img_product" />
+          <div class="preview_productInfo">
+            <p id="preview_text"><b>Category: </b>{{product.category}}</p>
+            <p id="preview_text"><b>Price: </b><b>$</b>{{product.price }}</p>
+            <div class="desription_box">
+              <p id="preview_text"><b>Description: </b>{{product.description }}</p>
+            </div>
+            <p id="preview_text"><b>Seller: </b>{{product.seller_name}}</p>
+            <p id="preview_text"><b>Posted Date</b>: {{product.created_at}}</p>
+            <button @click="addToCart(product.id)" style="width: 100%; align-items: flex-end;">Add to Cart</button>
+          </div>
+        </div>
       </div>
 
       <!--footer-->

@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const db = require('../db'); // promise pool
 
-//gets called from the home.js -> load() function
+//gets called from the home.js -> load() function || adds order to the order db
 router.post("/order", async (req, res) => {
     try {
         const { productId } = req.body;
@@ -17,28 +17,40 @@ router.post("/order", async (req, res) => {
         }
 
         // Get user ID from username
-        const [rows] = await db.query(
+        const [userRows] = await db.query(
             "SELECT id FROM users WHERE username = ?",
             [username]
         );
 
-        const [productInfo] = await db.query(
+        if (!userRows.length) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        const userId = userRows[0].id;
+
+        // Check if product exists
+        const [productRows] = await db.query(
             "SELECT * FROM product WHERE id = ?",
             [productId]
         );
 
-        if (!rows.length) {
+        if (!productRows.length) {
             return res.status(404).json({ success: false, message: "Product not found" });
         }
 
-        const product = productInfo[0]; // first product object
+        // Check if user already added this product
+        const [check] = await db.query(
+            "SELECT * FROM orders WHERE user_id = ? AND product_id = ?",
+            [userId, productId]
+        );
 
-        const userId = rows[0].id;
+        if (check.length > 0) {
+            return res.status(400).json({ success: false, message: "Product already added to cart" });
+        }
 
-        // Insert order
         // Insert order
         const [result] = await db.query(
-            `INSERT INTO orders (user_id, product_id) VALUES (?, ?)`,
+            "INSERT INTO orders (user_id, product_id) VALUES (?, ?)",
             [userId, productId]
         );
 
@@ -48,6 +60,7 @@ router.post("/order", async (req, res) => {
         res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 });
+
 
 router.get('/getOrdersInfo', async (req, res) => {
     try {
@@ -99,7 +112,15 @@ router.post('/cancelOrder', async (req, res) => {
     try {
         const { orderID } = req.body;
 
+        // Delete the order
         await db.query('DELETE FROM orders WHERE id = ?', [orderID]);
+
+        // Get the current max id
+        const [rows] = await db.query('SELECT IFNULL(MAX(id),0) AS maxId FROM orders');
+        const nextId = rows[0].maxId + 1;
+
+        // Reset AUTO_INCREMENT safely
+        await db.query(`ALTER TABLE orders AUTO_INCREMENT = ?`, [nextId]);
 
         res.json({ success: true });
     } catch (err) {
@@ -107,6 +128,7 @@ router.post('/cancelOrder', async (req, res) => {
         res.status(500).json({ success: false, message: 'Server error' });
     }
 });
+
 
 //fetch pending reviews
 router.get('/getPendingReviews', async (req, res) => {
@@ -178,6 +200,7 @@ router.post('/review', async (req, res) => {
     }
 });
 
+//order tab -> button clicked | placed the order for the items
 router.post('/placeOrder', async (req, res) => {
     try {
         const { orderID } = req.body;
@@ -242,11 +265,18 @@ router.post('/placeOrder', async (req, res) => {
             [productId]
         );
 
+        // Get the current max id
+        const [check] = await db.query('SELECT IFNULL(MAX(id),0) AS maxId FROM product');
+        const nextId = check[0].maxId + 1;
+
+        // Reset AUTO_INCREMENT safely
+        await db.query(`ALTER TABLE product AUTO_INCREMENT = ?`, [nextId]);
+
         if (result.affectedRows === 0) {
             return res.status(404).json({ success: false, message: "Product not found" });
         }
 
-        res.json({ success: true, message: "Order confirmed and product deleted successfully" });
+        res.json({ success: true, message: "Order confirmed" });
     } catch (err) {
         console.error(err);
         res.status(500).json({ success: false, message: "Server error" });

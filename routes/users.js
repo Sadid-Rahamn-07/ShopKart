@@ -207,17 +207,35 @@ router.get('/get_userPic', async (req, res) => {
   }
 });
 
-//fetch all products internal
+//fetch all products internal used in the home page
 router.get('/get_products', async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT * FROM product");
-    res.json(rows); // send all products
+    const [rows] = await db.query(`
+      SELECT 
+        u.username AS seller_name,
+        p.id,
+        p.title, 
+        p.category, 
+        p.price, 
+        p.description, 
+        p.product_image, 
+        p.created_at
+      FROM product AS p
+      JOIN users AS u ON p.user_id = u.id
+      ORDER BY p.created_at DESC
+    `);
+
+    res.json({
+      success: true,
+      products: rows
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, message: 'Database error' });
   }
 });
 
+//used in the sale page
 router.get('/getUserProducts', async (req, res) => {
   try {
     const username = req.session.username;
@@ -226,11 +244,15 @@ router.get('/getUserProducts', async (req, res) => {
     );
     const user_id = rw[0].id;
     const [rows] = await db.query("SELECT * FROM product WHERE user_id = ?", [user_id]);
-    res.json(rows); // send the products posted by user
+    res.json({
+      success: true,
+      username: username,
+      products: rows
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ success: false, message: 'Database error' });
   }
-})
+});
 
 module.exports = router;

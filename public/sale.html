@@ -29,25 +29,38 @@
           <a :class="{ active: tab === 'post' }" @click="changeTab('post')" class="tabItem">Post</a>
           <a :class="{ active: tab === 'posted' }" @click="changeTab('posted')" class="tabItem">Posted</a>
         </div>
-        <!--post new products -->
+
         <div class="content_wrapper">
+          <!--post new products -->
           <div v-if="tab === 'post'">
             <h1>Sale Section</h1>
             <!--PRODUCT PREVIEW-->
             <h2 style="text-align: center">Product Preview</h2>
             <div class="product_preview">
-              <div class="preview_title">
-                <h3>{{product.title}}</h3>
-              </div>
+              <h3 style="text-align: center" v-if="product.title === ''"><b>Title</b></h3>
+              <h3 style="text-align: center" v-else>{{product.title}}</h3>
+
+              <!--product image-->
               <div class="preview_img">
-                <img :src="profileImage || './images/sample.png'" alt="Current Profile" style="width: 100%" />
+                <img
+                  width="100%"
+                  :src="profileImage || './images/sample.png'"
+                  alt="Current Profile"
+                  style="width: 100%" />
               </div>
-              <p style="font-weight: bold">${{product.price}}</p>
-              <div class="textbox">
-                <p class="preview_desc">{{product.description}}</p>
+              <!--preview product info-->
+              <div class="preview_productInfo">
+                <p id="preview_text"><b>Category:</b> {{product.category}}</p>
+                <p id="preview_text"><b>Price: </b><b>$</b>{{product.price}}</p>
+
+                <p id="preview_text" class="preview_desc"><b>Description: </b>{{product.description}}</p>
+
+                <p id="preview_text"><b>Seller: </b>{{seller}}</p>
+                <p id="preview_text"><b>Post Date</b>: {{ currentDate }}</p>
+                <button style="width: 100%">Add to Cart</button>
               </div>
-              <button style="width: 100%">Add to Cart</button>
             </div>
+
             <!--POST PRODUCT FORM-->
             <div class="container">
               <form class="account_form">
@@ -84,9 +97,11 @@
             </div>
             <br />
           </div>
+
           <!--show products posted-->
           <div @click="showUserProducts" v-if="tab === 'posted'">
             <h1>Posted Section</h1>
+            <!--posted search bar-->
             <div class="posted_wrapper">
               <input
                 style="width: 100%"
@@ -101,13 +116,16 @@
 
               <div v-for="product in filteredProducts" :key="product.id" class="card">
                 <h3 style="text-align: center">{{ product.title }}</h3>
-
                 <img
                   :src="product.product_image ? '/uploads/products/' + product.product_image : './images/sample.png'"
                   class="img_product" />
-
-                <p class="price">${{ product.price }}</p>
-                <p class="description">{{ product.description }}</p>
+                <div class="preview_productInfo">
+                  <p id="preview_text"><b>Category: </b>{{product.category}}</p>
+                  <p id="preview_text"><b>Price: </b><b>$</b>{{product.price }}</p>
+                  <p id="preview_text"><b>Description: </b>{{product.description }}</p>
+                  <p id="preview_text"><b>Seller: </b>{{seller}}</p>
+                  <p id="preview_text"><b>Posted Date</b>: {{product.created_at}}</p>
+                </div>
               </div>
             </div>
           </div>

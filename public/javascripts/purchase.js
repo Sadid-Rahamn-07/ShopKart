@@ -74,6 +74,8 @@ const vueinst = Vue.createApp({
                 });
                 const data = await res.json();
                 if (data.success) {
+                    tab = 'reviews';
+                    this.fetchPendingReviews();
                     alert('Review submitted!')
                 }
                 else {
@@ -94,6 +96,7 @@ const vueinst = Vue.createApp({
             if (data.success) {
                 alert('Order Confirmed!');
                 this.fetchOrders(); // refresh the list
+                this.fetchPendingReviews();
             } else {
                 alert('Failed to confirm order.');
             }
