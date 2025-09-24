@@ -6,7 +6,8 @@ const vueinst = Vue.createApp({
             image_path: '/images/sample.png', // initial fallback
             new_link: '#',
             products: [],
-            filteredProducts: []
+            filteredProducts: [],
+            searchQuery: ''
         };
     },
     methods: {            // should be "methods", not "method"
@@ -90,6 +91,19 @@ const vueinst = Vue.createApp({
                 console.error(err);
                 alert('Error checking login status.');
             }
+        },
+        async searchProducts() {
+            const query = this.searchQuery.trim().toLowerCase();
+            if (!query) {
+                this.filteredProducts = this.products;
+                return;
+            }
+
+            this.filteredProducts = this.products.filter(product =>
+                product.title.toLowerCase().includes(query) ||
+                product.category.toLowerCase().includes(query) ||
+                product.description.toLowerCase().includes(query)
+            );
         },
     },
     mounted() {

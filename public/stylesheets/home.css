@@ -15,6 +15,18 @@ body {
 }
 .banner_content {
   text-align: center;
+  width: 80%;
+}
+
+input {
+  margin: 0.5rem 0;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.search_bar {
+  margin-top: 20px;
 }
 
 /*FOOTER*/

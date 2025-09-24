@@ -18,13 +18,14 @@
   justify-content: center;
   align-items: center;
   margin: auto;
-  width: 50%;
+  width: 100%;
   gap: 10px;
 }
 .nav_right {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-left: auto;
 }
 
 .nav_item {
@@ -89,7 +90,6 @@
 /* RESPONSIVE LAYOUT */
 @media screen and (max-width: 715px) {
   .nav_left,
-  .nav_center,
   .nav_right {
     display: none; /* hide sections */
   }

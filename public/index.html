@@ -23,21 +23,7 @@
         <div class="nav_left">
           <a class="nav_item" href="index.html">Home</a>
         </div>
-
-        <!--navbar links center-->
-        <div class="nav_center">
-          <form class="search" id="search-form">
-            <input id="search-box" onclick="showPopup()" type="search" name="" placeholder="search here..." />
-          </form>
-          <button
-            onclick="get_data(document.getElementById('search-box').value)"
-            id="search-btn"
-            type="button"
-            class="fa fa-search"
-            aria-label="Search">
-          </button>
-        </div>
-
+        
         <!--navbar links right-->
         <div class="nav_right">
           <a class="nav_item" @click="fetchUrl('wishlist.html')"><i class="fas fa-heart shopping-icon"></i></a>
@@ -55,6 +41,15 @@
           <div class="banner_content">
             <h1>Welcome to ShopKart</h1>
             <p>Your one stop for everything</p>
+              <!--navbar links center-->
+            <div class="search_bar">
+              <input
+                style="width: 100%"
+                type="search"
+                v-model="searchQuery"
+                placeholder="Search products..."
+                @input="searchProducts" />
+            </div>
           </div>
       </div>
 
