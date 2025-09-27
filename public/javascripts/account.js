@@ -117,7 +117,6 @@ const vueinst = Vue.createApp({
                 })
                 .catch(err => console.error(err));
         },
-
     },
     mounted() {
         this.fetchUsername();

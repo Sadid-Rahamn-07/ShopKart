@@ -6,6 +6,7 @@
     <title>Order</title>
     <link rel="stylesheet" href="./stylesheets/account_navbar.css" />
     <link rel="stylesheet" href="./stylesheets/purchase.css" />
+    <link rel="stylesheet" href="./stylesheets/common.css" />
     <link rel="stylesheet" href="./stylesheets/product_card.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <script src="https://unpkg.com/vue@3/dist/vue.global.js" defer></script>
@@ -35,7 +36,7 @@
         <h1>Order Section</h1>
         <h2 style="text-align: center">Your Orders</h2>
         <div class="display-container">
-          <div v-if="orders.length === 0">No orders found.</div>
+          <div v-if="orders.length === 0 && addtocartProductApi.length === 0">No orders found.</div>
           <div v-for="order in orders" :key="order.id" class="card">
             <h3 style="text-align: center">{{ order.title }}</h3>
             <img class="img_product" :src="'/uploads/products/' + order.product_image" alt="Product image" />
@@ -54,6 +55,23 @@
             </div>
           </div>
         </div>
+        <!--api products-->
+        <div class="display-container">
+          <div v-for="item in addtocartProductApi" :key="item.id" class="card">
+            <h3 style="text-align: center">{{ item.title }}</h3>
+            <img class="img_product" :src="item.images?.[0] || '/images/sample.png'" alt="Product image" />
+            <div class="product_info">
+              <p><b>Category:</b> {{ item.category?.name || 'N/A' }}</p>
+              <p><b>Price:</b> ${{ item.price }}</p>
+              <p style="text-align: justify"><b>Description:</b> {{ item.description || 'No description' }}</p>
+              <button @click="placeOrderApi(item.id)" style="width: 100%; text-align: center">Confirm Order</button>
+              <br />
+              <br />
+              <button @click="removeFromCart(item.id)" style="background-color: crimson; width: 100%">Cancel</button>
+            </div>
+          </div>
+        </div>
+        <!--api products-->
       </div>
 
       <!-- Reviews Tab -->

@@ -6,6 +6,7 @@
     <title>Wishlist</title>
     <link rel="stylesheet" href="./stylesheets/account_navbar.css" />
     <link rel="stylesheet" href="./stylesheets/wishlist.css" />
+    <link rel="stylesheet" href="./stylesheets/common.css" />
      <link rel="stylesheet" href="./stylesheets/product_card.css"></link>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <script src="https://unpkg.com/vue@3/dist/vue.global.js" defer></script>
@@ -24,7 +25,7 @@
         </div>
       </div>
 
-      <!--Wishlish content-->
+      <!--Wishlist content-->
       <div class="container">
         <h1>Wishlist Section</h1>
           <div class="posted_wrapper">
@@ -33,10 +34,23 @@
               type="search"
               v-model="searchQuery"
               placeholder="Search products..."
-              @input="get_data(searchQuery)" />
+              @input="get_data(searchQuery)" 
+            />
+              <!--filter section-->
+              <div class="filterProduct_dropdown">
+                <p>Filter by</p>
+                <select v-model="category" @change="filter">
+                  <option value="0" selected>Show All</option>
+                  <option value="1">Clothes</option>
+                  <option value="2">Electronics</option>
+                  <option value="3">Furniture</option>
+                  <option value="4">Shoes</option>
+                  <option value="5">Others</option>
+                </select>
+              </div>
           </div>
       </div>
-      
+     
       <!--show products from api-->
       <div class="display-container">
         <!-- Show loader -->
@@ -46,12 +60,14 @@
         <div v-for="item in products" :key="item.id" class="card">
           <h3 class="title">{{ item.title }}</h3>
           <img class="img_product" :src="item.images[0]" alt="Product image" />
+          <p class="price">{{ item.category.name }}</p>
           <p class="price">${{ item.price }}</p>
           <p class="description">{{ item.description }}</p>
-          <button>Add to Cart</button>
+          <button @click="getProductID(item.id)">Add to Cart</button>
+
         </div>
       </div>
-
+      
     </div>
   </body>
 </html>

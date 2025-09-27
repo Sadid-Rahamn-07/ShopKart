@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="./stylesheets/product_card.css"></link>
     <link rel="stylesheet" href="./stylesheets/home.css"></link>
+    <link rel="stylesheet" href="./stylesheets/common.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js" defer></script>
     <script src="./javascripts/navbar.js" defer></script>
     <script src="./javascripts/home.js" defer></script>
@@ -33,7 +34,6 @@
             <img v-if="linkUrl !== '/user.html'"  :src="image_path" alt="User Icon" class="user_logo">
           </a>
         </div>
-
       </div>
 
       <!--Banner-->
@@ -54,7 +54,22 @@
       </div>
 
       <!--Products-->
-      <h1 class="product_header">Products</h1>
+      <div class="filter_products_container">
+          <h1 class="product_header">Products</h1>
+          <div class="filterProduct_dropdown">
+            <p>Filter by</p>
+            <select v-model="category" style="margin: 20px;">
+              <option value="">Show All</option>
+              <option value="clothes">Clothes</option>
+              <option value="headphones">Headphones</option>
+              <option value="beauty">Beauty</option>
+              <option value="shoes">Shoes</option>
+              <option value="others">Others</option>
+            </select>
+          </div>
+      </div>
+
+      <!--Product displayer-->
       <div class="display-container">
         <div v-if="filteredProducts.length === 0">No results found.</div>
 

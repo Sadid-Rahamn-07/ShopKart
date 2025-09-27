@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="./stylesheets/product_card.css" />
     <link rel="stylesheet" href="./stylesheets/account_navbar.css" />
     <link rel="stylesheet" href="./stylesheets/sale.css" />
+    <link rel="stylesheet" href="./stylesheets/common.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <script src="https://unpkg.com/vue@3/dist/vue.global.js" defer></script>
     <script src="./javascripts/sale.js" defer></script>
@@ -63,7 +64,7 @@
 
             <!--POST PRODUCT FORM-->
             <div class="container">
-              <form class="account_form">
+              <form>
                 <!--Name, Email, Address, Phone-->
                 <input v-model="product.title" name="title" type="text" placeholder="Title" required />
                 <select v-model="product.category" id="category" required>

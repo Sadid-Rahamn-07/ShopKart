@@ -7,7 +7,8 @@ const vueinst = Vue.createApp({
             new_link: '#',
             products: [],
             filteredProducts: [],
-            searchQuery: ''
+            searchQuery: '',
+            category: ''
         };
     },
     methods: {            // should be "methods", not "method"
@@ -69,7 +70,14 @@ const vueinst = Vue.createApp({
                 .then(data => {
                     if (data.success) {
                         this.products = data.products;
-                        this.filteredProducts = data.products; // optional
+                        if (!this.category) {
+                            this.filteredProducts = data.products; // optional
+                        }
+                        else {
+                            this.filteredProducts = this.products.filter(
+                                product => product.category === this.category
+                            )
+                        }
                     }
                 })
                 .catch(err => console.error('Error fetching products:', err));
@@ -105,6 +113,11 @@ const vueinst = Vue.createApp({
                 product.description.toLowerCase().includes(query)
             );
         },
+    },
+    watch: {
+        category() {
+            this.fetchUserProduct();
+        }
     },
     mounted() {
         this.fetchUsername();

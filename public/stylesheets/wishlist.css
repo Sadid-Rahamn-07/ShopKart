@@ -21,3 +21,23 @@ input {
   border: 1px solid #ddd;
   border-radius: 5px;
 }
+
+.filter_products_container {
+  display: flex;
+  background-color: #3498db;
+  color: white;
+  width: 100%;
+}
+.filterProduct_dropdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+}
+
+select {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: white;
+}

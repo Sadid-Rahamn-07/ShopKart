@@ -2,18 +2,6 @@
   background-color: crimson;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-input {
-  margin: 0.5rem 0;
-  padding: 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
 textarea {
   height: 150px;
   padding: 12px;

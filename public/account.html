@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Account</title>
     <link rel="stylesheet" href="./stylesheets/account.css" />
+    <link rel="stylesheet" href="./stylesheets/common.css" />
     <link rel="stylesheet" href="./stylesheets/product_card.css" />
     <link rel="stylesheet" href="./stylesheets/account_navbar.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -51,22 +52,21 @@
               <!--DOB-->
               <div class="DOB">
                 <p>Date of Birth</p>
-                <div class="input_box">
-                  <select v-model="form.year">
-                    <option disabled value="">Year</option>
-                    <option v-for="y in years" :key="y" :value="y">{{ y }}</option>
-                  </select>
 
-                  <select v-model="form.month">
-                    <option disabled value="">Month</option>
-                    <option v-for="(m, index) in months" :key="index" :value="index + 1">{{ m }}</option>
-                  </select>
+                <select v-model="form.year">
+                  <option disabled value="">Year</option>
+                  <option v-for="y in years" :key="y" :value="y">{{ y }}</option>
+                </select>
 
-                  <select v-model="form.day">
-                    <option disabled value="">Day</option>
-                    <option v-for="d in daysInMonth" :key="d" :value="d">{{ d }}</option>
-                  </select>
-                </div>
+                <select v-model="form.month">
+                  <option disabled value="">Month</option>
+                  <option v-for="(m, index) in months" :key="index" :value="index + 1">{{ m }}</option>
+                </select>
+
+                <select v-model="form.day">
+                  <option disabled value="">Day</option>
+                  <option v-for="d in daysInMonth" :key="d" :value="d">{{ d }}</option>
+                </select>
               </div>
 
               <!--Profile Image-->

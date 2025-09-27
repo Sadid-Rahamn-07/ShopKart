@@ -4,7 +4,9 @@ const vueinst = Vue.createApp({
             orders: [],
             tab: 'orders',
             reviews_items: [],
-            reviews: {} // store per-order reviews
+            reviews: {}, // store per-order reviews
+            username: '',
+            addtocartProductApi: [],
         };
     },
     methods: {
@@ -100,9 +102,66 @@ const vueinst = Vue.createApp({
             } else {
                 alert('Failed to confirm order.');
             }
-        }
+        },
+        async placeOrderApi(ApiorderID) {
+            try {
+                const api = `https://api.escuelajs.co/api/v1/products/${ApiorderID}`;
+
+                const res = await fetch(api, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (!res.ok) {
+                    throw new Error(`HTTP error! Status: ${res.status}`);
+                }
+
+                const data = await res.json();
+
+                // data is the deleted product object, not {success: true}
+                console.log('Deleted product:', data);
+                alert('Order confirmed');
+
+                // Optional: remove it from local Vue array to update UI
+                this.addtocartProductApi = this.addtocartProductApi.filter(item => item.id !== ApiorderID);
+                localStorage.setItem(`productApi_${this.username}`, JSON.stringify(this.addtocartProductApi));
+
+            } catch (err) {
+                console.error('Failed to confirm order:', err);
+                alert('Failed to confirm order.');
+            }
+        },
+        async removeFromCart(productId) {
+            // Filter out the product with the matching ID
+            this.addtocartProductApi = this.addtocartProductApi.filter(
+                item => item.id !== productId
+            );
+
+            // Update localStorage
+            localStorage.setItem(
+                `productApi_${this.username}`,
+                JSON.stringify(this.addtocartProductApi)
+            );
+
+            alert('Product removed from cart!');
+        },
+        async fetchUsername() {
+            try {
+                const res = await fetch('/users/get_username', { credentials: 'include' });
+                const data = await res.json();
+                this.username = data.username || 'guest';
+
+                // Load user's cart from localStorage after username is set
+                this.addtocartProductApi = JSON.parse(
+                    localStorage.getItem(`productApi_${this.username}`) || '[]'
+                );
+            } catch (err) {
+                console.error(err);
+            }
+        },
     },
-    mounted() {
+    async mounted() {
+        await this.fetchUsername();
         this.fetchOrders();
         this.fetchPendingReviews();
     }

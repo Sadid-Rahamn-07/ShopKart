@@ -48,15 +48,6 @@
   box-shadow: 0 16px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
-button {
-  padding: 0.8rem;
-  border: none;
-  border-radius: 5px;
-  background: #333;
-  color: #fff;
-  cursor: pointer;
-}
-
 @media screen and (max-width: 830px) {
   .card {
     width: 350px;

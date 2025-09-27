@@ -18,13 +18,6 @@ body {
   width: 80%;
 }
 
-input {
-  margin: 0.5rem 0;
-  padding: 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
 .search_bar {
   margin-top: 20px;
 }
@@ -44,11 +37,20 @@ input {
 }
 /*Product header*/
 .product_header {
-  display: block;
+  margin: 20px;
+}
+
+.filter_products_container {
+  display: flex;
   background-color: #3498db;
-  padding: 20px;
-  margin: 0px;
   color: white;
+  width: 100%;
+}
+.filterProduct_dropdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
 }
 
 .user_logo {
